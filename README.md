@@ -1,7 +1,7 @@
 # AdventOfCode
 
 My AdventOfCode.com solutions. 
-This repository contains my solutions for the AdventOfCode puzzles.
+This repository contains my solutions for the AdventOfCode puzzles written in Kotlin.
 
 Each puzzle has its own kotlin file. Within each file there is a main method that can be used to run each solution.
 
