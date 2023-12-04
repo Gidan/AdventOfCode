@@ -2,18 +2,16 @@ fun main() {
     Puzzle2().solve()
 }
 
-class Puzzle2 {
+class Puzzle2 : Puzzle() {
 
     private val gameId = "^Game ([0-9]{1,3}):".toRegex()
     private val redMatcher = "([0-9]{1,2}) red".toRegex()
     private val greenMatcher = "([0-9]{1,2}) green".toRegex()
     private val blueMatcher = "([0-9]{1,2}) blue".toRegex()
 
-    fun solve() {
-        println("AdventOfCode 2023 puzzle #2")
-        val lines = Util.getInput(2)
+    override fun solution() {
+        val lines = getInput()
         val games = lines.map {
-            println(it)
             val id = gameId.find(it)?.groups?.get(1)?.value?.toInt() ?: -1
             val reveals = it.split(":")[1].split(";").map { r ->
                 val red = redMatcher.find(r)?.groupValues?.get(1)?.toInt() ?: -1
@@ -22,17 +20,19 @@ class Puzzle2 {
                 Reveal(red, green, blue)
             }.toCollection(mutableListOf())
             val g = Game(id, reveals)
-            println("${if (g.isPossible()) "POSSIBLE" else "NOT POSSIBLE"} - $g")
+            //println("${if (g.isPossible()) "POSSIBLE" else "NOT POSSIBLE"} - $g")
             g
         }.toCollection(mutableListOf())
 
         val sum = games.filter { game -> game.isPossible() }.map { game -> game.id }.reduce{g1, g2 -> g1 + g2}
-        println(sum)
+        println("part1: $sum")
 
 
         val totalPower = games.map { it.power() }.reduce{ g1, g2 -> g1 + g2 }
-        println(totalPower)
+        println("part2: $totalPower")
     }
+
+    override fun getPuzzleNumber() = 2
 
 }
 

@@ -4,11 +4,12 @@ fun main() {
     Puzzle4().solve()
 }
 
-class Puzzle4 {
+class Puzzle4 : Puzzle() {
 
-    fun solve() {
-        println("AdventOfCode 2023 puzzle #4")
-        val cards = Util.getInput(4)
+    override fun getPuzzleNumber() = 4
+
+    override fun solution() {
+        val cards = getInput()
         var totalScore = 0
         var cardsCount = 0
         for (card in cards) {
@@ -18,8 +19,8 @@ class Puzzle4 {
             cardsCount += countCards(card, cardIdx, cards)
         }
 
-        println("totalScore: $totalScore")
-        println("totalCards: $cardsCount")
+        println("part1: $totalScore")
+        println("part2: $cardsCount")
     }
 
     private val cardRegex = "^Card +[0-9]+: +([0-9 ]+) [|] +([0-9 ]+)\$".toRegex()
@@ -28,7 +29,6 @@ class Puzzle4 {
     private val cardMap = mutableMapOf<String, List<Int>>()
 
     private fun checkTicket(card: String): Int {
-        println(card)
         val matchingNumbers = matchingNumbers(card)
         return 2.0.pow(matchingNumbers.size - 1).toInt()
     }

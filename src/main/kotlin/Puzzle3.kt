@@ -5,19 +5,21 @@ fun main() {
     Puzzle3().solve()
 }
 
-typealias Coordinates = Pair<Int,Int>
+typealias Coordinates = Pair<Int, Int>
 
-class Puzzle3 {
+class Puzzle3 : Puzzle() {
 
-    fun solve() {
-        println("AdventOfCode 2023 puzzle #3")
+    override fun getPuzzleNumber(): Int = 3
 
-        val lines = Util.getInput(3)
+    override fun solution() {
+        val lines = getInput()
         val width = lines[0].length
         val height = lines.size
 
-        val checkRight: (String, Int) -> Pair<Boolean, Boolean> = { line, i -> Pair(i < width && line[i] != '.', if (i < width) line[i] == '*' else false) }
-        val checkLeft: (String, Int) -> Pair<Boolean, Boolean> = { line, i -> Pair(i - 1 > 0 && line[i] != '.', if (i - 1 > 0) line[i] == '*' else false) }
+        val checkRight: (String, Int) -> Pair<Boolean, Boolean> =
+            { line, i -> Pair(i < width && line[i] != '.', if (i < width) line[i] == '*' else false) }
+        val checkLeft: (String, Int) -> Pair<Boolean, Boolean> =
+            { line, i -> Pair(i - 1 > 0 && line[i] != '.', if (i - 1 > 0) line[i] == '*' else false) }
         val checkRowInRange: (Int, Int, Int) -> Pair<Boolean, Int> = { lineIndex, start, end ->
             if (lineIndex in 0..<height) {
                 val l = lines[lineIndex]
@@ -106,14 +108,10 @@ class Puzzle3 {
 
         }
 
-        println(sum)
-
         val filter = gearMap.filter { (symbolPosition, numberList) -> numberList.size == 2 }
-        println(gearMap)
         filter.forEach { (t, u) -> gearRatio += u.reduce { acc, i -> acc * i } }
-        println(gearRatio)
 
+        println("part1: $sum")
+        println("part2: $gearRatio")
     }
-
-
 }

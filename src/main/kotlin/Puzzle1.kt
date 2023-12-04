@@ -4,11 +4,12 @@ fun main() {
     Puzzle1().solve()
 }
 
-class Puzzle1 {
+class Puzzle1 : Puzzle() {
 
-    fun solve(){
-        println("AdventOfCode 2023 puzzle #1")
-        val lines = Util.getInput(1)
+    override fun getPuzzleNumber() = 1
+
+    override fun solution() {
+        val lines = getInput()
         var part1Sum = 0
         var part2Sum = 0
 
@@ -41,7 +42,7 @@ class Puzzle1 {
                     break
                 }
             }
-            for (i in line.length -1 downTo 0) {
+            for (i in line.length - 1 downTo 0) {
                 if (line[i].isDigit()) {
                     lastDigitIndex = i
                     lastDigit = line[i].digitToInt()
@@ -69,8 +70,8 @@ class Puzzle1 {
             part2Sum += part2LineNumber
         }
 
-        println("p1: $part1Sum")
-        println("p2: $part2Sum")
+        println("part1: $part1Sum")
+        println("part2: $part2Sum")
     }
 
 
