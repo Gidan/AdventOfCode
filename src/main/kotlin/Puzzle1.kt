@@ -6,9 +6,9 @@ fun main() {
 
 class Puzzle1 {
 
-    fun solve() {
-        println("AdventOfCode 2023 puzzle #1 part 1")
-        val lines = getInput()
+    fun solve(){
+        println("AdventOfCode 2023 puzzle #1")
+        val lines = Util.getInput(1)
         var part1Sum = 0
         var part2Sum = 0
 
@@ -33,25 +33,21 @@ class Puzzle1 {
             //println(line)
             var part1LineNumber = 0
             var part2LineNumber = 0
-            var i = 0
-            while (i < line.length) {
-                if (line[i].isDigit()) {
+            for ((i, c) in line.withIndex()) {
+                if (c.isDigit()) {
                     firstDigitIndex = i
-                    firstDigit = line[i].digitToInt()
+                    firstDigit = c.digitToInt()
                     part1LineNumber += 10 * firstDigit
                     break
                 }
-                i++
             }
-            i = line.length -1
-            while (i >= 0) {
+            for (i in line.length -1 downTo 0) {
                 if (line[i].isDigit()) {
                     lastDigitIndex = i
                     lastDigit = line[i].digitToInt()
                     part1LineNumber += lastDigit
                     break
                 }
-                i--
             }
 
             for ((n, word) in numbers.withIndex()) {
@@ -77,13 +73,5 @@ class Puzzle1 {
         println("p2: $part2Sum")
     }
 
-    private fun getInput(): List<String> {
-        val path = javaClass.getResource("input.txt")
-        val lines = mutableListOf<String>()
-        path?.let {
-            val filePath = it.path
-            lines.addAll(File(filePath).readLines())
-        }
-        return lines
-    }
+
 }
