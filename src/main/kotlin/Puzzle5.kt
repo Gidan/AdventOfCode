@@ -1,12 +1,21 @@
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import kotlinx.coroutines.withContext
+import util.Colors
 
 fun main() {
     Puzzle5().solve()
+}
+
+const val LOG = true
+
+fun log(text: String) {
+    if (LOG) print(text)
+}
+
+fun logln(text: String) {
+    if (LOG) println(text)
+}
+
+fun logln() {
+    if (LOG) println()
 }
 
 class Puzzle5 : Puzzle() {
@@ -37,14 +46,11 @@ class Puzzle5 : Puzzle() {
     private val headerRegex = "^([a-z-]+) map:$".toRegex()
     private val dataLineRegex = "^[0-9 ]+$".toRegex()
 
-    override fun solution() {
+    private fun readSeeds() {
         val input = getInput()
-
         val inputHeight = input.size
         var lineIdx = 0
-
         lateinit var currentRangeList: MutableList<Range>
-
         while (lineIdx < inputHeight) {
             val line = input[lineIdx]
             when {
@@ -55,20 +61,22 @@ class Puzzle5 : Puzzle() {
                         val len = seeds[seedIdx + 1]
                         seedsRanges.add(start..<start + len)
                     }
-                    println("seeds: $seeds")
+                    logln("seeds: $seeds")
+                    logln("seedRanges:")
+                    seedsRanges.printSorted()
                 }
 
                 headerRegex.matches(line) -> {
                     val matchAt = headerRegex.matchAt(line, 0)
                     matchAt?.groups?.get(0)?.let {
                         val mapName = it.value.removeSuffix(" map:")
-                        println(mapName)
+                        logln(mapName)
                         currentRangeList = maps[mapName]!!
                     }
                 }
 
                 line.isEmpty() -> {
-                    println()
+                    logln()
                 }
 
                 dataLineRegex.matches(line) -> {
@@ -77,48 +85,61 @@ class Puzzle5 : Puzzle() {
                     val sourceStart = numbers[1]
                     val rangeLen = numbers[2]
                     val range = Range(sourceStart, destinationStart, rangeLen)
-                    println("$destinationStart $sourceStart $rangeLen = $range")
+                    logln("$range")
                     currentRangeList.add(range)
                 }
             }
 
             lineIdx++
         }
-        println()
+    }
 
+    override fun solution() {
+        readSeeds()
+        logln()
+
+        // part 1
         seeds.minOfOrNull { seed ->
-            processSeed(seed)
+            findLocation(seed)
         }.let { min ->
-            println("lowest location: $min")
+            println("lowest location part1: $min")
         }
 
-        val mutex = Mutex()
+        //part 2
         val locations = mutableListOf<ULong>()
-        runBlocking {
-            withContext(Dispatchers.Default) {
-                seedsRanges.forEach { range ->
-                    launch {
-                        processRange(range) {
-                            mutex.withLock {
-                                locations.add(it)
-                            }
-                        }
-                    }
-                }
+        seedsRanges.forEach { range ->
+            processRange(range) {
+                locations.add(it)
             }
         }
+
+        // concurrent
+//        val mutex = Mutex()
+//        runBlocking {
+//            withContext(Dispatchers.Default) {
+//                seedsRanges.forEach { range ->
+//                    launch {
+//                        processRange(range) {
+//                            mutex.withLock {
+//                                locations.add(it)
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
         println("lowest location part2: ${locations.min()}")
 
     }
 
-    private suspend fun processRange(range: ULongRange, done: suspend (ULong) -> Unit) {
+    private fun processRange(range: ULongRange, done: /*suspend*/ (ULong) -> Unit) {
         for (seed in range.first..range.last) {
-            val location = processSeed(seed)
+            val location = findLocation(seed)
             done(location)
         }
     }
 
-    private fun processSeed(seed: ULong): ULong {
+    private fun findLocation(seed: ULong): ULong {
         //println("\nprocessing seed:$seed")
         var value = seed
         for ((name, rangeList) in maps.entries) {
@@ -143,8 +164,40 @@ data class Range(val source: ULong, val destination: ULong, val rangeLen: ULong)
     }
 
     override fun toString(): String {
-        return "[$source-${source + rangeLen - 1u}][$destination:${destination + rangeLen - 1u}]"
+        return "[$source-${source + rangeLen - 1u}] -> [$destination:${destination + rangeLen - 1u}]"
     }
 }
 
 fun String.toULongList(): List<ULong> = this.split(" ").map { it.toULong() }
+
+fun List<ULongRange>.printInLineSorted() {
+    if (LOG) {
+        val sorted = this.sortedBy { range -> range.first }
+        for ((index, uLongRange) in sorted.withIndex()) {
+            if (index > 0) {
+                val distance = sorted[index].first - sorted[index - 1].last
+                if (distance > 1uL) {
+                    print("--]$distance[--")
+                } else {
+                    print(";")
+                }
+            }
+            print("${Colors.YELLOW}$uLongRange${Colors.RESET}")
+        }
+    }
+}
+
+fun List<ULongRange>.printSorted() {
+    if (LOG) {
+        val sorted = this.sortedBy { range -> range.first }
+        for ((index, uLongRange) in sorted.withIndex()) {
+            if (index > 0) {
+                val distance = sorted[index].first - sorted[index - 1].last
+                if (distance > 1uL) {
+                    println("$distance")
+                }
+            }
+            println("${Colors.YELLOW}$uLongRange${Colors.RESET}")
+        }
+    }
+}
