@@ -10,7 +10,7 @@ fun log(text: String) {
     if (LOG) print(text)
 }
 
-fun logln(text: String) {
+fun logln(text: Any) {
     if (LOG) println(text)
 }
 
