@@ -1,7 +1,5 @@
 package util
 
-import Range
-
 fun String.toULongList(): List<ULong> = this.split(" ").map { it.toULong() }
 
 fun List<ULongRange>.printInLineSorted() {
