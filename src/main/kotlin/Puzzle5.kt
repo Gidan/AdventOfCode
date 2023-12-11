@@ -1,21 +1,9 @@
 import util.Colors
+import util.LOG
+import util.logln
 
 fun main() {
     Puzzle5().solve()
-}
-
-const val LOG = true
-
-fun log(text: String) {
-    if (LOG) print(text)
-}
-
-fun logln(text: Any) {
-    if (LOG) println(text)
-}
-
-fun logln() {
-    if (LOG) println()
 }
 
 class Puzzle5 : Puzzle() {

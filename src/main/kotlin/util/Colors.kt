@@ -16,7 +16,7 @@ enum class Colors(
 
     MAGENTA("\u001B[0;35m"),
 
-    CYAN("\u001B[0;36m"),
+    CYAN("\u001B[0;96m"),
 
     WHITE("\u001B[0;37m");
 

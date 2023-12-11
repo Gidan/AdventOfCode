@@ -10,6 +10,10 @@ fun logln(text: String) {
     if (LOG) println(text)
 }
 
+fun logln(obj: Any) {
+    if (LOG) println(obj)
+}
+
 fun logln() {
     if (LOG) println()
 }

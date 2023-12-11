@@ -1,3 +1,5 @@
+import util.logln
+
 class Puzzle9 : Puzzle() {
     override fun getPuzzleNumber() = 9
 
