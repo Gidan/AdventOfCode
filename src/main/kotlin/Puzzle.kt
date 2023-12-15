@@ -1,4 +1,5 @@
 import java.io.File
+import java.lang.Exception
 
 abstract class Puzzle {
 
@@ -13,8 +14,9 @@ abstract class Puzzle {
 
     protected fun getInput(): List<String> {
         val path = Puzzle::class.java.getResource("${getPuzzleNumber()}/input.txt")
+            ?: throw Exception("Input file not found [resources/${getPuzzleNumber()}/input.txt]")
         val lines = mutableListOf<String>()
-        path?.let {
+        path.let {
             val filePath = it.path
             lines.addAll(File(filePath).readLines())
         }

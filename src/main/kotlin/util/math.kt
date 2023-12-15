@@ -13,10 +13,22 @@ fun findLCM(a: ULong, b: ULong): ULong {
     return maxLcm
 }
 
-data class Vec2D(val x : Int, val y : Int) {
+data class Vec2D(val x: Int, val y: Int) {
     operator fun plus(increment: Vec2D): Vec2D {
         return Vec2D(x + increment.x, y + increment.y)
     }
+}
+
+fun Int.pow(exp: Int): Int {
+    val base = this
+    var exponent = exp
+    var result = 1
+
+    while (exponent != 0) {
+        result *= base
+        --exponent
+    }
+    return result
 }
 
 
