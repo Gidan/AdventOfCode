@@ -1,3 +1,7 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import kotlin.math.max
 import kotlin.math.min
 
@@ -14,7 +18,7 @@ class Puzzle3 : Puzzle() {
 
     override fun getPuzzleNumber(): Int = 3
 
-    override fun solution() {
+    override fun solution() : Solution {
         val lines = getInput()
         val width = lines[0].length
         val height = lines.size
@@ -111,7 +115,6 @@ class Puzzle3 : Puzzle() {
         val gearsWithTwoNumbers = gearMap.filter { (_, numberList) -> numberList.size == 2 }
         gearsWithTwoNumbers.forEach { (_, n) -> gearRatio += n.reduce { acc, i -> acc * i } }
 
-        println("part1: $sum")
-        println("part2: $gearRatio")
+        return Solution(sum, gearRatio)
     }
 }

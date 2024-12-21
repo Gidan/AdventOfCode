@@ -1,3 +1,8 @@
+package aoc_2023
+
+import Puzzle
+import Solution
+
 fun main() {
     Puzzle14().solve()
 }
@@ -5,7 +10,7 @@ fun main() {
 class Puzzle14 : Puzzle() {
     override fun getPuzzleNumber() = 14
 
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
 
         val board = Board()
@@ -15,7 +20,6 @@ class Puzzle14 : Puzzle() {
         val board2 = board.clone()
 
         board.tiltNorth()
-        println("part1: ${board.load()}")
 
         var cycleCount = 0
         var repetitionFound = false
@@ -40,7 +44,8 @@ class Puzzle14 : Puzzle() {
         val cycles = gridToCycles[lastGrid.toString()]!!
         val index = ((1000000000 - cycles) % (gridsList.size - cycles)) + cycles - 1
         val grid = gridsList[index]
-        println("part2: ${grid.load()}")
+
+        return Solution(board.load(), grid.load())
     }
 
 }

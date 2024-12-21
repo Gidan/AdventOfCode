@@ -1,3 +1,7 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.lcm
 
 fun main() {
@@ -11,7 +15,7 @@ class Puzzle8 : Puzzle() {
     private val nodeMap = mutableMapOf<String, Node>()
     private lateinit var instructions: String
 
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
         instructions = input[0]
 
@@ -20,11 +24,10 @@ class Puzzle8 : Puzzle() {
             nodeMap[node.label] = node
         }
 
-        part1()
-        part2()
+        return Solution(part1(), part2().toLong())
     }
 
-    private fun part1() {
+    private fun part1() : Int {
         if (nodeMap.containsKey("AAA")) {
             var currentNode = nodeMap["AAA"]!!
             var steps = 0
@@ -39,13 +42,12 @@ class Puzzle8 : Puzzle() {
                     'R' -> currentNode = nodeMap[currentNode.right]!!
                 }
             }
-
-            println("part1 total:$steps")
+            return steps
         }
-
+        return 0
     }
 
-    private fun part2() {
+    private fun part2() : ULong {
         var currentNodes = nodeMap.keys.filter { k -> k.endsWith("A") }.map { k -> nodeMap[k]!! }
         val steps = currentNodes.map { n ->
             var currentNode = n
@@ -64,7 +66,7 @@ class Puzzle8 : Puzzle() {
             steps
         }.lcm()
 
-        println("part2 total:$steps")
+        return steps
     }
 
     private fun parseNode(str: String): Node {

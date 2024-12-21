@@ -17,6 +17,10 @@ data class Vec2D(val x: Int, val y: Int) {
     operator fun plus(increment: Vec2D): Vec2D {
         return Vec2D(x + increment.x, y + increment.y)
     }
+
+    operator fun times(scale: Int): Vec2D {
+        return copy(x = x * scale, y = y * scale)
+    }
 }
 
 fun Int.pow(exp: Int): Int {

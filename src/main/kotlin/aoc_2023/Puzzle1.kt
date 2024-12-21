@@ -1,4 +1,7 @@
-import java.io.File
+package aoc_2023
+
+import Puzzle
+import Solution
 
 fun main() {
     Puzzle1().solve()
@@ -8,7 +11,7 @@ class Puzzle1 : Puzzle() {
 
     override fun getPuzzleNumber() = 1
 
-    override fun solution() {
+    override fun solution(): Solution {
         val lines = getInput()
         var part1Sum = 0
         var part2Sum = 0
@@ -70,9 +73,6 @@ class Puzzle1 : Puzzle() {
             part2Sum += part2LineNumber
         }
 
-        println("part1: $part1Sum")
-        println("part2: $part2Sum")
+        return Solution(part1Sum, part2Sum)
     }
-
-
 }

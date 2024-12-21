@@ -1,3 +1,7 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import kotlin.math.pow
 
 fun main() {
@@ -8,7 +12,7 @@ class Puzzle4 : Puzzle() {
 
     override fun getPuzzleNumber() = 4
 
-    override fun solution() {
+    override fun solution() : Solution {
         val cards = getInput()
         var totalScore = 0
         var cardsCount = 0
@@ -19,8 +23,7 @@ class Puzzle4 : Puzzle() {
             cardsCount += countCards(card, cardIdx, cards)
         }
 
-        println("part1: $totalScore")
-        println("part2: $cardsCount")
+        return Solution(totalScore, cardsCount)
     }
 
     private val cardRegex = "^Card +[0-9]+: +([0-9 ]+) [|] +([0-9 ]+)\$".toRegex()

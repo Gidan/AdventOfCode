@@ -1,33 +1,42 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.Vec2D
 import util.logln
 import kotlin.math.abs
 
+fun main() {
+    Puzzle11().solve()
+}
+
 class Puzzle11 : Puzzle() {
     override fun getPuzzleNumber() = 11
 
-    //uncomment this for part1
-//     private val voidMultiplier = 1
-    private val voidMultiplier = 999999
-
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
-        logln(input.joinToString(separator = "\n"))
+        //logln(input.joinToString(separator = "\n"))
 
-        val galaxies = findGalaxies(input)
-        logln(galaxies)
+        val part1 = getDistance(input, 1)
+        val part2 = getDistance(input, 999999)
 
+        return Solution(part1, part2)
+    }
+
+    private fun getDistance(input : List<String>, multiplier : Int) : Long {
+        val galaxies = findGalaxies(input, multiplier)
         var totalDistance = 0L
         var count = 0
         for (i in 0..<galaxies.size - 1) {
             for (i2 in i + 1..<galaxies.size) {
                 count++
                 val shortestDistance = shortestDistance(galaxies[i], galaxies[i2])
-                logln("$count - ${galaxies[i]}-->${galaxies[i2]} = $shortestDistance")
+                //logln("$count - ${galaxies[i]}-->${galaxies[i2]} = $shortestDistance")
                 totalDistance += shortestDistance
             }
         }
 
-        println("part1 totalDistance: $totalDistance")
+        return totalDistance
     }
 
     private fun shortestDistance(g1: Vec2D, g2: Vec2D): Int {
@@ -40,7 +49,7 @@ class Puzzle11 : Puzzle() {
         }
     }
 
-    private fun findGalaxies(input: List<String>): List<Vec2D> {
+    private fun findGalaxies(input: List<String>, multiplier : Int): List<Vec2D> {
         val galaxies = mutableListOf<Vec2D>()
         var lineVoidOffset = 0
         input.forEachIndexed { lineIndex, line ->
@@ -50,8 +59,8 @@ class Puzzle11 : Puzzle() {
                     if (c == '#') {
                         galaxies.add(
                             Vec2D(
-                                charIndex + (columnVoidOffset * voidMultiplier),
-                                lineIndex + (lineVoidOffset * voidMultiplier)
+                                charIndex + (columnVoidOffset * multiplier),
+                                lineIndex + (lineVoidOffset * multiplier)
                             )
                         )
                     } else {
@@ -69,6 +78,3 @@ class Puzzle11 : Puzzle() {
     }
 }
 
-fun main() {
-    Puzzle11().solve()
-}

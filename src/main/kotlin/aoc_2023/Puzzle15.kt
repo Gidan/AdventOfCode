@@ -1,11 +1,20 @@
+package aoc_2023
+
+import Puzzle
+import Solution
+
+fun main() {
+    Puzzle15().solve()
+}
+
 class Puzzle15 : Puzzle() {
     override fun getPuzzleNumber() = 15
 
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
 
         val instructions = input.joinToString("").split(",")
-        println("part1: ${instructions.sumOf { hash(it) }}")
+        val part1 = instructions.sumOf { hash(it) }
 
         val boxes = Array(256) { _ -> Box() }
 
@@ -26,7 +35,7 @@ class Puzzle15 : Puzzle() {
         val totalFocusingPower =
             boxes.mapIndexed { index, box -> box.focusingPower(index + 1) }.reduce { acc, p -> acc + p }
 
-        println("part2: $totalFocusingPower")
+        return Solution(part1, totalFocusingPower)
     }
 
     private fun hash(str: String): Int {
@@ -84,6 +93,3 @@ class Box {
 
 data class Lens(val label: String, var focalLength: Int)
 
-fun main() {
-    Puzzle15().solve()
-}

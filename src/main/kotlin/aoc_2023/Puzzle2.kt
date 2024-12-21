@@ -1,3 +1,8 @@
+package aoc_2023
+
+import Puzzle
+import Solution
+
 fun main() {
     Puzzle2().solve()
 }
@@ -9,7 +14,7 @@ class Puzzle2 : Puzzle() {
     private val greenMatcher = "([0-9]{1,2}) green".toRegex()
     private val blueMatcher = "([0-9]{1,2}) blue".toRegex()
 
-    override fun solution() {
+    override fun solution(): Solution {
         val lines = getInput()
         val games = lines.map {
             val id = gameId.find(it)?.groups?.get(1)?.value?.toInt() ?: -1
@@ -25,11 +30,8 @@ class Puzzle2 : Puzzle() {
         }.toCollection(mutableListOf())
 
         val sum = games.filter { game -> game.isPossible() }.map { game -> game.id }.reduce{g1, g2 -> g1 + g2}
-        println("part1: $sum")
-
-
         val totalPower = games.map { it.power() }.reduce{ g1, g2 -> g1 + g2 }
-        println("part2: $totalPower")
+        return Solution(sum, totalPower)
     }
 
     override fun getPuzzleNumber() = 2

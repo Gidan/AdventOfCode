@@ -1,8 +1,17 @@
+package aoc_2023
+
+import Puzzle
+import Solution
+
+fun main() {
+    Puzzle6().solve()
+}
+
 class Puzzle6 : Puzzle() {
 
     override fun getPuzzleNumber() = 6
 
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
         val timesAsString = input[0].removePrefix("Time:")
             .trimStart()
@@ -16,13 +25,9 @@ class Puzzle6 : Puzzle() {
 
         val times = timesAsString.map{it.toULong()}
         val distances = distancesAsString.map{it.toULong()}
-        println("input times:$times")
-        println("input distances:$distances")
 
         val timesJoined = timesAsString.joinToString(" ").replace(" ", "").toULong()
         val distancesJoined = distancesAsString.joinToString(" ").replace(" ", "").toULong()
-        println("input joined times:$timesJoined")
-        println("input joined distances:$distancesJoined")
 
         val waysToWin = mutableListOf<ULong>()
 
@@ -34,10 +39,9 @@ class Puzzle6 : Puzzle() {
             raceIndex++
         }
 
-        println("part1: ${waysToWin.reduce { acc, w -> acc * w }}")
-
+        val part1 = waysToWin.reduce { acc, w -> acc * w }
         val waysToWinRace = waysToWinRace(timesJoined, distancesJoined)
-        println("part2: $waysToWinRace")
+        return Solution(part1.toLong(), waysToWinRace.toLong())
     }
 
     private fun waysToWinRace(raceTime: ULong, recordDistance: ULong): ULong {
@@ -54,6 +58,3 @@ class Puzzle6 : Puzzle() {
     }
 }
 
-fun main() {
-    Puzzle6().solve()
-}

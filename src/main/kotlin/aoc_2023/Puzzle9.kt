@@ -1,26 +1,32 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.logln
+
+fun main() {
+    Puzzle9().solve()
+}
 
 class Puzzle9 : Puzzle() {
     override fun getPuzzleNumber() = 9
 
-    override fun solution() {
+    override fun solution(): Solution {
         val input = getInput()
         val numbersList = input.map { line ->
             val map = line.split(" ").map { n -> n.toInt() }
             map
         }
 
-        logln(numbersList)
-
         val part1Sum = numbersList.map { nList ->
             findNextValue(nList)
         }.reduce { acc, i -> acc + i }
-        println(part1Sum)
 
         val part2Sum = numbersList.map { nList ->
             findPreviousValue(nList)
         }.reduce { acc, i -> acc + i }
-        println(part2Sum)
+
+        return Solution(part1Sum, part2Sum)
     }
 
     private fun findNextValue(list : List<Int>) : Int {
@@ -63,6 +69,3 @@ class Puzzle9 : Puzzle() {
 
 }
 
-fun main() {
-    Puzzle9().solve()
-}

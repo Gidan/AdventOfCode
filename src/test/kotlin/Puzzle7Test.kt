@@ -1,3 +1,5 @@
+import aoc_2023.Hand
+import aoc_2023.JokerHand
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

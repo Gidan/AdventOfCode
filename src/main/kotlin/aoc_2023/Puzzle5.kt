@@ -1,3 +1,7 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.Colors
 import util.LOG
 import util.logln
@@ -82,24 +86,22 @@ class Puzzle5 : Puzzle() {
         }
     }
 
-    override fun solution() {
+    override fun solution() : Solution {
         readSeeds()
         logln()
 
         // part 1
-        seeds.minOfOrNull { seed ->
+        val min = seeds.minOf { seed ->
             findLocation(seed)
-        }.let { min ->
-            println("lowest location part1: $min")
         }
 
         //part 2
-        val locations = mutableListOf<ULong>()
-        seedsRanges.forEach { range ->
-            processRange(range) {
-                locations.add(it)
-            }
-        }
+//        val locations = mutableListOf<ULong>()
+//        seedsRanges.forEach { range ->
+//            processRange(range) {
+//                locations.add(it)
+//            }
+//        }
 
         // concurrent
 //        val mutex = Mutex()
@@ -116,7 +118,11 @@ class Puzzle5 : Puzzle() {
 //                }
 //            }
 //        }
-        println("lowest location part2: ${locations.min()}")
+//        println("lowest location part2: ${locations.min()}")
+
+//        return Solution(min.toLong(), locations.min().toLong())
+
+        return Solution(min.toLong(), 0)
 
     }
 

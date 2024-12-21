@@ -1,4 +1,12 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.*
+
+fun main() {
+    Puzzle10().solve()
+}
 
 class Puzzle10 : Puzzle() {
     override fun getPuzzleNumber() = 10
@@ -33,7 +41,7 @@ class Puzzle10 : Puzzle() {
         return l
     }
 
-    override fun solution() {
+    override fun solution() : Solution {
         val input = getInput()
         lateinit var start: Vec2D
         val printableGrid = mutableListOf<String>()
@@ -106,8 +114,7 @@ class Puzzle10 : Puzzle() {
             logln("$sanitizedLine : $lineArea")
         }
 
-        println("part1 steps: $steps")
-        println("part2 insideArea: $inside")
+        return Solution(steps, inside)
     }
 
     private fun printGridArea(grid: List<String>, visited: Set<Vec2D>, perimeter: Set<Vec2D>) {
@@ -209,6 +216,4 @@ class Puzzle10 : Puzzle() {
     }
 }
 
-fun main() {
-    Puzzle10().solve()
-}
+

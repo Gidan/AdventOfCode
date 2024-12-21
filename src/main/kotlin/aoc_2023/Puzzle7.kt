@@ -1,3 +1,7 @@
+package aoc_2023
+
+import Puzzle
+import Solution
 import util.logln
 import kotlin.math.sign
 
@@ -11,7 +15,7 @@ class Puzzle7 : Puzzle() {
     private val hands = mutableListOf<Hand>()
     private val jokerHands = mutableListOf<JokerHand>()
 
-    override fun solution() {
+    override fun solution() : Solution {
         readHands()
 
         var totalWin = 0
@@ -19,18 +23,13 @@ class Puzzle7 : Puzzle() {
 
         val sortedHands = hands.sortedWith { h1, h2 -> h1.compareTo(h2) }
         val sortedHandsWj = jokerHands.sortedWith { h1, h2 -> h1.compareTo(h2) }
-        logln("sorted")
-        logln(sortedHands.joinToString(separator = "\n"))
-        logln("sortedWj")
-        logln(sortedHandsWj.joinToString(separator = "\n"))
 
         for (i in sortedHands.indices) {
             totalWin += sortedHands[i].bid * (i + 1)
             totalWinWj += sortedHandsWj[i].bid * (i + 1)
         }
 
-        println("part1: $totalWin")
-        println("part2: $totalWinWj")
+        return Solution(totalWin, totalWinWj)
     }
 
     private fun readHands() {
