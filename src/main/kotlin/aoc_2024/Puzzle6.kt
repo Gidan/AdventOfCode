@@ -13,8 +13,9 @@ class Puzzle6 : Puzzle2024(6) {
 
     override fun solution(): Solution {
         val input = getInput()
-        val part1 = part1(input)
-        val part2 = part2(input)
+        val distinctPositions = part1(input)
+        val part1 = distinctPositions.size
+        val part2 = part2(input, distinctPositions)
         return Solution(part1, part2)
     }
 
@@ -34,15 +35,17 @@ class Puzzle6 : Puzzle2024(6) {
         '<' to Vec2D(-1, 0),
         '^' to Vec2D(0, -1),
         '>' to Vec2D(1, 0),
-        'v' to Vec2D(0, 1))
+        'v' to Vec2D(0, 1)
+    )
 
     private val nextDirectionMap = mapOf(
         '<' to '^',
         '^' to '>',
         '>' to 'v',
-        'v' to '<')
+        'v' to '<'
+    )
 
-    private fun part1(input: List<String>): Int {
+    private fun part1(input: List<String>): Set<Vec2D> {
         val distinctPositions = mutableSetOf<Vec2D>()
         var position = findStartPosition(input)
         var currentDirection = input[position.y][position.x]
@@ -53,20 +56,15 @@ class Puzzle6 : Puzzle2024(6) {
             if (nextPosition.isOutOfBounds(input)) break
             val nextChar = input[nextPosition.y][nextPosition.x]
             when (nextChar) {
-                '.', '^', '>', '<', 'v' -> {
-                    position = nextPosition
-                }
-                '#' -> {
-                    currentDirection = nextDirectionMap[currentDirection]!!
-                    position += incrementMap[currentDirection]!!
-                }
+                '.', '^', '>', '<', 'v' -> position = nextPosition
+                '#' -> currentDirection = nextDirectionMap[currentDirection]!!
             }
         }
 
-        return distinctPositions.size
+        return distinctPositions
     }
 
-    private fun Vec2D.isOutOfBounds(input: List<String>) : Boolean {
+    private fun Vec2D.isOutOfBounds(input: List<String>): Boolean {
         val height = input.size
         if (height == 0) return true
         val width = input[0].length
@@ -75,8 +73,37 @@ class Puzzle6 : Puzzle2024(6) {
         return false
     }
 
-    private fun part2(input: List<String>): Int {
-        return 0
+    private fun part2(input: List<String>, distinctPositions: Set<Vec2D>): Int {
+        val startPosition = findStartPosition(input)
+        return distinctPositions.filter { it != startPosition }.count {
+            isLoop(input, startPosition, Vec2D(it.x, it.y))
+        }
+    }
+
+    private data class PosDir(val position: Vec2D, val direction: Char)
+
+    private fun isLoop(input: List<String>, start: Vec2D, obstruction: Vec2D): Boolean {
+        var position = start
+        var currentDirection = input[position.y][position.x]
+        val distinctPosDirs = mutableSetOf<PosDir>()
+        while (!position.isOutOfBounds(input)) {
+            if (distinctPosDirs.contains(PosDir(position, currentDirection))) return true
+            distinctPosDirs.add(PosDir(position, currentDirection))
+            val increment = incrementMap[currentDirection]!!
+            val nextPosition = position + increment
+            if (nextPosition.isOutOfBounds(input)) break
+            val nextChar = if (nextPosition == obstruction) {
+                'O'
+            } else {
+                input[nextPosition.y][nextPosition.x]
+            }
+            when (nextChar) {
+                '.', '^', '>', '<', 'v' -> position = nextPosition
+                '#', 'O' -> currentDirection = nextDirectionMap[currentDirection]!!
+            }
+        }
+
+        return false
     }
 
 
